@@ -42,8 +42,6 @@ class GameParser(HTMLParser):
 
 		# check for clock
 		elif tag == "i":
-			print("in i")
-			print(attrs)
 			if attrs == [("class", "fas fa-clock text-info")]:
 				self.submitted = True
 
