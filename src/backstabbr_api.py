@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import argparse
+import asyncio
 
 from html.parser import HTMLParser
 
@@ -17,7 +18,7 @@ with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "configs", "
 	SESSION = config["SESSION"]
 
 
-class GameParser(HTMLParser):
+class SubmittedParser(HTMLParser):
 	def __init__(self):
 		HTMLParser.__init__(self)
 		self.inTags = []
@@ -79,9 +80,28 @@ class GameParser(HTMLParser):
 				self.inTags.pop()
 
 		return
+
+
+class SubmittedParser(HTMLParser):
+	def __init__(self):
+		HTMLParser.__init__(self)
+		self.inTags = []
+		self.currentCountry = None
+		self.submitted = False
+		self.players = {}
+
+	def handle_starttag(self, tag, attrs):
+
+
+	def handle_data(self, data):
+
+
+	def handle_endtag(self, tag):
+
+
 		
 
-def get_game_info(url):
+def _get_game_info(url):
 	cookies = {
 		"session" : SESSION
 	}
@@ -96,8 +116,8 @@ def get_game_info(url):
 
 def get_submitted_countries(server):
 	GAME_URL = config[f"{server.upper()}_GAME_URL"]
-	parser = GameParser()
-	html = get_game_info(GAME_URL)
+	parser = SubmittedParser()
+	html = _get_game_info(GAME_URL)
 
 	parser.feed(html)
 
