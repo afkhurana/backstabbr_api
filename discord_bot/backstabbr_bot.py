@@ -16,9 +16,9 @@ from src.backstabbr_api import BackstabbrAPI
 
 
 # parse sys.argv
-with argparse.ArgumentParser() as parser:
-	parser.add_argument("server", help="name of server to watch (must match config.json)")
-	sysargs = parser.parse_args()
+argparser = argparse.ArgumentParser()
+argparser.add_argument("server", help="name of server to watch (must match config.json)")
+sysargs = argparser.parse_args()
 
 
 # load configs
