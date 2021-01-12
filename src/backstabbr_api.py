@@ -94,7 +94,7 @@ class BackstabbrAPI:
 		self.session_token = session_token
 		self.base_url = base_url
 
-	def __get_game_info(url):
+	def __get_game_info(self, url):
 		cookies = {
 			"session" : self.session_token
 		}
@@ -106,14 +106,14 @@ class BackstabbrAPI:
 
 		return html
 
-	def get_submitted_countries():
+	def get_submitted_countries(self):
 		parser = _SubmittedParser()
-		html = _get_game_info(GAME_URL)
+		html = self._get_game_info(GAME_URL)
 		parser.feed(html)
 
 		return parser.players
 
-	def get_press():
+	def get_press(self):
 		pass
 
 
