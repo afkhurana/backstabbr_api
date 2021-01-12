@@ -1,3 +1,6 @@
 .env
 foo*
 *.pyc
+*__pycache__*
+src/configs/*
+src/temp/*

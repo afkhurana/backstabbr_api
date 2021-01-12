@@ -1,6 +1,8 @@
 import requests
 import os
-from dotenv import load_dotenv
+import sys
+import json
+import argparse
 
 from html.parser import HTMLParser
 
@@ -8,10 +10,11 @@ import pprint as pp
 from html5print import HTMLBeautifier
 
 
-load_dotenv()
-GAME_URL=os.getenv("GAME_URL")
-SESSION=os.getenv("SESSION")
 
+
+with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "configs", "config.json")) as f:
+	config = json.load(f)
+	SESSION = config["SESSION"]
 
 
 class GameParser(HTMLParser):
@@ -51,7 +54,10 @@ class GameParser(HTMLParser):
 	def handle_data(self, data):
 		# we only need this to run if we're checking for country name
 		if "class country" in self.inTags:
-			self.currentCountry = data.strip("\r\n\n ")
+			data = data.strip("\r\n\n ")
+			if data == "":
+				return
+			self.currentCountry = data
 
 		return
 
@@ -88,7 +94,8 @@ def get_game_info(url):
 	return html
 
 
-def get_submitted_countries():
+def get_submitted_countries(server):
+	GAME_URL = config[f"{server.upper()}_GAME_URL"]
 	parser = GameParser()
 	html = get_game_info(GAME_URL)
 
@@ -100,7 +107,10 @@ def get_submitted_countries():
 
 
 def main():
-	pp.pprint(get_submitted_countries())
+	argparser = argparse.ArgumentParser(description='API for backstabbr')
+	argparser.add_argument("server", help="name of server (atm: h or brown)")
+	parserArgs = argparser.parse_args()
+	pp.pprint(get_submitted_countries(parserArgs.server))
 
 
 
