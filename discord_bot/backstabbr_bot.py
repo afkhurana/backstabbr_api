@@ -1,3 +1,6 @@
+import sys
+sys.path.append("..")
+
 import os
 import discord
 from discord.ext import commands, tasks
@@ -9,7 +12,7 @@ import pprint as pp
 import asyncio
 import argparse
 
-from backstabbr_api.backstabbr_api import BackstabbrAPI
+from src.backstabbr_api import BackstabbrAPI
 
 
 # parse sys.argv
