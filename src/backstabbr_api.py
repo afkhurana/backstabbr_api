@@ -75,9 +75,24 @@ class _SubmittedParser(HTMLParser):
 
 		return
 
-class _PressParser(HTMLParser):
+# parser that takes in a http://base.url/pressthread and grabs all thread_ids
+class _PressListParser(HTMLParser):
 	def __init__(self):
 		HTMLParser.__init__(self)
+		self.thread_ids = [] # strings
+
+	def handle_starttag(self, tag, attrs):
+		if tag == "a":
+			for name, value in attrs:
+				if name == "id":
+					assert ( value.startswith("thread_") )
+					self.thread_ids.append(value[7:])
+
+
+class _PressThreadParser(HTMLParser):
+	def __init__(self):
+		HTMLParser.__init__(self)
+		self.thread_ids = []
 
 	def handle_starttag(self, tag, attrs):
 		pass
@@ -113,9 +128,17 @@ class BackstabbrAPI:
 
 		return parser.players
 
+	async def wait_for_submitted_update(self):
+		original_players = self.get_submitted_countries()
+		new_players = original_players
+		while new_players == original_players:
+			new_players = self.get_submitted_countries()
+			await asyncio.sleep(30)
+		return new_players
+
 	def get_press(self):
-		pass
+		parser = _PressListParser()
+		html = self.__get_game_info(self.base_url + "/pressthread")
+		parser.feed(html)
 
-
-
-
+		return parser.thread_ids
