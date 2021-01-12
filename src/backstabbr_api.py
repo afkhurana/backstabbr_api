@@ -108,7 +108,7 @@ class BackstabbrAPI:
 
 	def get_submitted_countries(self):
 		parser = _SubmittedParser()
-		html = self.__get_game_info(self.GAME_URL)
+		html = self.__get_game_info(self.base_url)
 		parser.feed(html)
 
 		return parser.players
