@@ -9,7 +9,7 @@ import pprint as pp
 import asyncio
 import argparse
 
-from ..src.backstabbr_api import BackstabbrAPI
+from backstabbr_api import BackstabbrAPI
 
 
 # parse sys.argv
