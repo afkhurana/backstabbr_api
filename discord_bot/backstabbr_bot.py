@@ -26,7 +26,7 @@ with open(os.path.join("configs", "config.json")) as f:
 	config = json.load(f)
 	DISCORD_TOKEN = config["DISCORD_TOKEN"]
 	DISCORD_GUILD = config["DISCORD_GUILD"]
-	GAME_URL = config[f"{sysargs.server}_GAME_URL"]
+	GAME_URL = config[f"{sysargs.server.upper()}_GAME_URL"]
 	SESSION_TOKEN = config["SESSION_TOKEN"]
 
 
