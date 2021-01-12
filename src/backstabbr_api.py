@@ -12,13 +12,7 @@ from html5print import HTMLBeautifier
 
 
 
-
-with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "configs", "config.json")) as f:
-	config = json.load(f)
-	SESSION = config["SESSION"]
-
-
-class SubmittedParser(HTMLParser):
+class _SubmittedParser(HTMLParser):
 	def __init__(self):
 		HTMLParser.__init__(self)
 		self.inTags = []
@@ -81,14 +75,9 @@ class SubmittedParser(HTMLParser):
 
 		return
 
-
-class SubmittedParser(HTMLParser):
+class _PressParser(HTMLParser):
 	def __init__(self):
 		HTMLParser.__init__(self)
-		self.inTags = []
-		self.currentCountry = None
-		self.submitted = False
-		self.players = {}
 
 	def handle_starttag(self, tag, attrs):
 
@@ -100,42 +89,33 @@ class SubmittedParser(HTMLParser):
 
 
 		
+class BackstabbrAPI:
+	def __init__(self, session_token, base_url):
+		self.session_token = session_token
+		self.base_url = base_url
 
-def _get_game_info(url):
-	cookies = {
-		"session" : SESSION
-	}
+	def __get_game_info(url):
+		cookies = {
+			"session" : self.session_token
+		}
 
-	r = requests.get(url, cookies=cookies)
+		r = requests.get(url, cookies=cookies)
 
-	html = r.content
-	html = HTMLBeautifier.beautify(html, 4)
+		html = r.content
+		html = HTMLBeautifier.beautify(html, 4)
 
-	return html
+		return html
 
+	def get_submitted_countries():
+		parser = _SubmittedParser()
+		html = _get_game_info(GAME_URL)
+		parser.feed(html)
 
-def get_submitted_countries(server):
-	GAME_URL = config[f"{server.upper()}_GAME_URL"]
-	parser = SubmittedParser()
-	html = _get_game_info(GAME_URL)
+		return parser.players
 
-	parser.feed(html)
-
-	return parser.players
-
-
-
-
-def main():
-	argparser = argparse.ArgumentParser(description='API for backstabbr')
-	argparser.add_argument("server", help="name of server (atm: h or brown)")
-	parserArgs = argparser.parse_args()
-	pp.pprint(get_submitted_countries(parserArgs.server))
+	def get_press():
+		pass
 
 
 
 
-	
-
-if __name__ == "__main__":
-	main()
