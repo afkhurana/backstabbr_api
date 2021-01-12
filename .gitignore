@@ -7,4 +7,4 @@ src/temp/*
 
 *config.json
 
-discord_bot/config/*
+discord_bot/configs/*
