@@ -4,3 +4,7 @@ foo*
 *__pycache__*
 src/configs/*
 src/temp/*
+
+*config.json
+
+discord_bot/config/*
