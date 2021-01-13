@@ -4,6 +4,7 @@ import sys
 import json
 import argparse
 import asyncio
+from copy import deepcopy
 
 from html.parser import HTMLParser
 
@@ -282,7 +283,7 @@ class BackstabbrAPI:
 
 	async def wait_for_submitted_update(self):
 		original_players = self.get_submitted_countries()
-		new_players = original_players.copy()
+		new_players = deepcopy(original_players)
 
 		while new_players == original_players:
 			new_players = self.get_submitted_countries()
@@ -314,10 +315,10 @@ class BackstabbrAPI:
 
 	async def wait_for_thread_updates(self):
 		original_thread_ids = self.get_press_threads()
-		new_thread_ids = original_thread_ids.copy()
+		new_thread_ids = deepcopy(original_thread_ids)
 
 		original_top_thread = self.get_press_thread(original_thread_ids[0])
-		new_top_thread = original_top_thread.copy()
+		new_top_thread = deepcopy(original_top_thread)
 
 		while (original_thread_ids == new_thread_ids) and (original_top_thread == new_top_thread):
 			new_thread_ids = self.get_press_threads()
