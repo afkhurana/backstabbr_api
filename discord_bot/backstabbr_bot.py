@@ -58,7 +58,12 @@ class Util:
 
 	def get_submitted_ids():
 		sent_orders = backstabbr_api.get_submitted_countries()
-		ids_to_send = [user_id for country, user_id in backstabbr_countries.items() if sent_orders[country] == False and country != "You"]
+		ids_to_send = []
+		for country, user_id in backstabbr_countries.items():
+			if country == "You":
+				continue
+			if not sent_orders[country]:
+				ids_to_send.append(user_id)
 		return ids_to_send
 
 
