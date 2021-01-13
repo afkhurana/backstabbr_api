@@ -74,19 +74,8 @@ async def backstabbr(ctx, *args):
 			message += f"{get(ctx.guild.members, id=int(user_id)).mention}\n"
 		await ctx.send(message)
 
-		# set reminder
-		message_reminder.start(ctx)
 
 
-# loop remind!orders
-@tasks.loop(hours=24)
-async def message_reminder(ctx):
-	await backstabbr(ctx, "remind", "orders")
-
-@message_reminder.before_loop
-async def before_reminder():
-	await asyncio.sleep(24*60*60)
-	return
 
 
 bot.run(DISCORD_TOKEN)
