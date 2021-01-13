@@ -81,6 +81,11 @@ async def on_ready():
 			break
 
 
+@bot.event
+async def on_command_error(ctx, error):
+	if isinstance(error, commands.errors.CheckFailure):
+		return
+
 def server_correct():
 	async def predicate(ctx):	
 		return ctx.guild.name == DISCORD_GUILD
