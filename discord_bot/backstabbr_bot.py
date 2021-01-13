@@ -83,6 +83,7 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
+	# suppress check traceback
 	if isinstance(error, commands.errors.CheckFailure):
 		return
 
