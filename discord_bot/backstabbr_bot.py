@@ -12,12 +12,14 @@ import pprint as pp
 import asyncio
 import argparse
 
-from src.backstabbr_api import BackstabbrAPI
+from src.backstabbr_api import BackstabbrAPI, Models
 
 
 # parse sys.argv
 argparser = argparse.ArgumentParser()
 argparser.add_argument("server", help="name of server to watch (must match config.json)")
+argparser.add_argument("--refresh", help="refresh time for watch/loops", default='30')
+parser.add_argument('--test', action="store_true")
 sysargs = argparser.parse_args()
 
 
@@ -38,7 +40,30 @@ bot = commands.Bot(command_prefix="backstabbr!", intents=intents)
 
 
 # initialize API
-backstabbr_api = BackstabbrAPI(SESSION_TOKEN, GAME_URL)
+backstabbr_api = BackstabbrAPI(SESSION_TOKEN, GAME_URL, refresh_time=int(sysargs.refresh))
+
+
+
+
+class Util:
+	def __init__(self, *args, **kwargs):
+		self.args = args
+		self.kwargs = kwargs
+
+	def load_countries():
+		global backstabbr_countries
+		with open(os.path.join("configs", "backstabbr_countries.json")) as f:
+			backstabbr_countries = json.load(f)[sysargs.server]
+		return backstabbr_countries
+
+	def get_submitted_ids():
+		sent_orders = backstabbr_api.get_submitted_countries()
+		ids_to_send = [user_id for country, user_id in backstabbr_countries.items() if sent_orders[country] == False]
+		return ids_to_send
+
+
+# load configs
+backstabbr_countries = Util.load_countries()
 
 
 
@@ -53,20 +78,18 @@ async def on_ready():
 
 
 
-
-@bot.command(name="bot", ignore_extra=True)
-async def backstabbr(ctx, *args):
-	if len(args) < 2:
+@bot.command(name="remind", ignore_extra=True)
+async def remind(ctx, *args):	
+	if args == []:
+		ctx.send("What am I reminding?")
 		return
 
-	if args[0] == "remind" and args[1] == "orders":
-		# load countries
-		with open(os.path.join("configs", "backstabbr_countries.json")) as f:
-			backstabbr_countries = json.load(f)[sysargs.server]
+	# reload countries
+	Util.load_countries()
 
+	if args[0] == "orders":
 		# retrieve list from api
-		sent_orders = backstabbr_api.get_submitted_countries()
-		ids_to_send = [user_id for country, user_id in backstabbr_countries.items() if sent_orders[country] == False]
+		ids_to_send = Util.get_submitted_ids()
 
 		# message users
 		message = "The following countries still need to send orders:\n"
@@ -75,7 +98,33 @@ async def backstabbr(ctx, *args):
 		await ctx.send(message)
 
 
+class Press(commands.Cog):
+	def __init__(self, bot):
+		self.bot = bot
+		self.on_press_change.start()
+
+	def cog_unload(self):
+		self.on_press_change.cancel()
+
+	@tasks.loop()
+	async def on_press_change(self):
+		new_thread = await backstabbr_api.wait_for_thread_updates() # Models.Thread
+
+		Util.load_countries()
+
+		for recipient in new_thread.recipients:
+			# do not notify if user wrote most recent message
+			if recipient == new_thread.messages[-1].author:
+				continue
+			user = self.bot.get_user(backstabbr_countries[recipient])
+			dm_channel = await user.create_dm()
+
+			message = ("You received a press message. View it on backstabbr:\n"
+						f"{GAME_URL}")
+			await dm_channel.send(message)
 
 
 
+
+bot.add_cog(Press(bot))
 bot.run(DISCORD_TOKEN)
