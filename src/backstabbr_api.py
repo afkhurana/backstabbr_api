@@ -110,11 +110,11 @@ class Models:
 
 		def __eq__(self, other):
 			if isinstance(other, Models.Thread):
-				return self.messages == other.messages
+				return (self.thread_id == other.thread_id and self.recipients == other.recipients and self.messages == other.messages)
 			return False
 
 		def __hash__(self):
-			return hash(tuple(self.thread_id, self.messages))
+			return hash(tuple(self.thread_id, self.recipients, self.messages))
 
 		def __str__(self):
 			str_messages = '\n'.join([str(message) for message in self.messages])
