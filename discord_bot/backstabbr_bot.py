@@ -81,9 +81,14 @@ async def on_ready():
 			break
 
 
+def server_correct(ctx):
+	async def predicate(ctx):	
+		return ctx.guild.name == DISCORD_GUILD
+	return commands.check(predicate)
 
 
 @bot.command(name="remind", ignore_extra=True)
+@server_correct()
 async def remind(ctx, *args):	
 	if args == []:
 		ctx.send("What am I reminding?")
