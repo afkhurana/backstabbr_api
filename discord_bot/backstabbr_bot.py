@@ -109,10 +109,14 @@ class Press(commands.Cog):
 	@tasks.loop()
 	async def on_press_change(self):
 		new_thread = await backstabbr_api.wait_for_thread_updates() # Models.Thread
+		if sysargs.test:
+			print("Received message")
 
 		Util.load_countries()
 
 		for recipient in new_thread.recipients:
+			if sysargs.test:
+				print("Recipient")
 			# do not notify if user wrote most recent message
 			if recipient == new_thread.messages[-1].author:
 				continue
