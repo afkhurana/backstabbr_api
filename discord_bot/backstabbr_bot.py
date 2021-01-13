@@ -19,7 +19,7 @@ from src.backstabbr_api import BackstabbrAPI, Models
 argparser = argparse.ArgumentParser()
 argparser.add_argument("server", help="name of server to watch (must match config.json)")
 argparser.add_argument("--refresh", help="refresh time for watch/loops", default='30')
-parser.add_argument('--test', action="store_true")
+argparser.add_argument('--test', action="store_true")
 sysargs = argparser.parse_args()
 
 
