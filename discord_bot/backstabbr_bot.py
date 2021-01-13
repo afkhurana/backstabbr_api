@@ -81,7 +81,7 @@ async def on_ready():
 			break
 
 
-def server_correct(ctx):
+def server_correct():
 	async def predicate(ctx):	
 		return ctx.guild.name == DISCORD_GUILD
 	return commands.check(predicate)
