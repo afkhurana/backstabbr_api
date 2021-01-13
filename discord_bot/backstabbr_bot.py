@@ -23,10 +23,10 @@ sysargs = argparser.parse_args()
 
 # load configs
 with open(os.path.join("configs", "config.json")) as f:
-	config = json.load(f)
+	config = json.load(f)[sysargs.server]
 	DISCORD_TOKEN = config["DISCORD_TOKEN"]
 	DISCORD_GUILD = config["DISCORD_GUILD"]
-	GAME_URL = config[f"{sysargs.server.upper()}_GAME_URL"]
+	GAME_URL = config["GAME_URL"]
 	SESSION_TOKEN = config["SESSION_TOKEN"]
 
 
@@ -62,7 +62,7 @@ async def backstabbr(ctx, *args):
 	if args[0] == "remind" and args[1] == "orders":
 		# load countries
 		with open(os.path.join("configs", "backstabbr_countries.json")) as f:
-			backstabbr_countries = json.load(f)
+			backstabbr_countries = json.load(f)[sysargs.server]
 
 		# retrieve list from api
 		sent_orders = backstabbr_api.get_submitted_countries()
