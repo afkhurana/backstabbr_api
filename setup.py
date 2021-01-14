@@ -7,4 +7,4 @@ setup(name='backstabbr_api',
 		author='Arjun Khurana',
 		author_email='afkhurana@gmail.com',
 		license='MIT',
-		packages=find_packages())
+		packages=['backstabbr_api', 'backstabbr_bot'])
