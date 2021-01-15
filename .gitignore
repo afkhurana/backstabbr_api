@@ -14,4 +14,4 @@ discord_bot/configs/*
 dist/
 build/
 
-env/
+venv/
