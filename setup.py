@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='backstabbr_api',
-		version='1.0.0',
+		version='1.0.1',
 		description='Web-scraper API and Discord Bot for the online diplomacy program Backstabbr',
 		url='https://github.com/afkhurana/backstabbr_api',
 		author='Arjun Khurana',
