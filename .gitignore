@@ -8,3 +8,8 @@ src/temp/*
 *config.json
 
 discord_bot/configs/*
+
+*.egg-info/
+*.egg
+dist/
+build/
