@@ -12,7 +12,7 @@ import pprint as pp
 import asyncio
 import argparse
 
-from src.backstabbr_api import BackstabbrAPI, Models
+from backstabbr_api import BackstabbrAPI, Models
 
 
 # parse sys.argv
