@@ -123,6 +123,7 @@ class Press(commands.Cog):
 		self.on_press_change.cancel()
 
 	@tasks.loop()
+	@server_correct()
 	async def on_press_change(self):
 		new_thread = await backstabbr_api.wait_for_thread_updates() # Models.Thread
 		if sysargs.test:
