@@ -8,4 +8,4 @@ setup(name='backstabbr_api',
 		author_email='afkhurana@gmail.com',
 		license='MIT',
 		packages=['backstabbr_api', 'backstabbr_bot'],
-		install_requires=["discord.py, html5print, requests"])
+		install_requires=["discord.py", "html5print", "requests"])
