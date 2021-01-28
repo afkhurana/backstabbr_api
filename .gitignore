@@ -13,3 +13,6 @@ discord_bot/configs/*
 *.egg
 dist/
 build/
+
+venv/
+env/
