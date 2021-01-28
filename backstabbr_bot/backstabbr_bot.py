@@ -114,6 +114,12 @@ async def remind(ctx, *args):
 		await ctx.send(message)
 
 
+
+# PRESS IS DEPRICATED
+# WARNING
+# DO NOT USE
+# WILL OVERWHELM BACKSTABBR WITH TRAFFIC
+"""
 class Press(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -148,7 +154,7 @@ class Press(commands.Cog):
 			print(new_thread.messages[-1])
 
 
-
-
 bot.add_cog(Press(bot))
+"""
+
 bot.run(DISCORD_TOKEN)

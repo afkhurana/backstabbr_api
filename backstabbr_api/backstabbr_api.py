@@ -128,7 +128,13 @@ class Models:
 			self.messages.append(message)
 
 
+# PRESS IS DEPRICATED
+# WARNING
+# DO NOT USE
+# WILL OVERWHELM BACKSTABBR WITH TRAFFIC
 
+
+"""
 # parser that takes in a http://base.url/pressthread and grabs all thread_ids
 class _PressListParser(HTMLParser):
 	def __init__(self):
@@ -327,3 +333,4 @@ class BackstabbrAPI:
 			await asyncio.sleep(self.refresh_time)
 
 		return new_top_thread
+"""

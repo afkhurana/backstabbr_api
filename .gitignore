@@ -5,6 +5,8 @@ foo*
 src/configs/*
 src/temp/*
 
+*/configs/*
+
 *config.json
 
 discord_bot/configs/*
