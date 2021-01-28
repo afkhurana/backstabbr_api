@@ -142,7 +142,10 @@ class Press(commands.Cog):
 
 			message = ("You received a press message. View it on backstabbr:\n"
 						f"{GAME_URL}")
-			await dm_channel.send(message)
+			# await dm_channel.send(message)
+			print(user, message)
+			print(datetime.datetime.now())
+			print(new_thread.messages[-1])
 
 
 

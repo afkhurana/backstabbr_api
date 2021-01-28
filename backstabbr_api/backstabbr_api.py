@@ -4,6 +4,7 @@ import sys
 import json
 import argparse
 import asyncio
+from datetime import datetime
 from copy import deepcopy
 
 from html.parser import HTMLParser
