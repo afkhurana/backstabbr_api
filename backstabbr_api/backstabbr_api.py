@@ -261,7 +261,7 @@ class _PressThreadParser(HTMLParser):
 		elif tag == "div" and "press-thread-body" in self._inTags:
 			self._inTags.pop()
 			assert ( len(self._inTags) == 0 )
-
+"""
 		
 class BackstabbrAPI:
 	def __init__(self, session_token, base_url, refresh_time=30):
@@ -333,4 +333,4 @@ class BackstabbrAPI:
 			await asyncio.sleep(self.refresh_time)
 
 		return new_top_thread
-"""
+
