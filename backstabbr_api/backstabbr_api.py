@@ -77,6 +77,62 @@ class _SubmittedParser(HTMLParser):
 
 		return
 
+# written by JF(J0hnny007)
+class _CenterParser(HTMLParser):
+    def __init__(self):
+        HTMLParser.__init__(self)
+        self._inTags = []
+        self.currentCountry = None
+        self.centerCount = None
+        self.center = {}
+
+    def handle_starttag(self, tag, attrs):
+        # clear flags while entering the legend
+        if tag == "div" and attrs == [("class", "legend")]:
+            self._inTags.append("class legend")
+            self.currentCountry = None
+            self.centerCount = None
+        # escape when not in the legend
+        if "class legend" not in self._inTags:
+            return
+
+        # enter span tag
+        if tag == "span":
+            self._inTags.append("span")
+
+        return
+
+    def handle_data(self, data):
+        # strips data from all clutter and unwanted lines, keeping only the country/center count string
+        if "class legend" in self._inTags:
+            data = data.strip("\r\n\n ")
+            # filters out the Army and Fleet String
+            if (data == "") or (data == "Army") or (data == "Fleet"):
+                return
+            # split the retrieved string into country and count(as int)
+            self.currentCountry = data.split()[0]
+            self.centerCount = int(data.split()[1])
+
+        return
+
+    def handle_endtag(self, tag):
+        # we don't need to parse if we're not in the legend
+        if "class legend" not in self._inTags:
+            return
+
+        # escape span tag
+        if tag == "span":
+            self._inTags.pop()
+            if self.currentCountry is not None:
+                self.center[self.currentCountry] = self.centerCount
+
+        # remove class legend flag
+        if tag == "div":
+            if self._inTags[-1] == "class legend":
+                self._inTags.pop()
+
+        return
+
 # models shell class
 class Models:
 	class Message:
@@ -334,3 +390,9 @@ class BackstabbrAPI:
 
 		return new_top_thread
 
+	def get_supply_center_count(self):
+		parser = _CenterParser()
+		html = self.__get_html(self.base_url)
+		parser.feed(html)
+
+		return parser.center
