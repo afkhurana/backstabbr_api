@@ -19,7 +19,7 @@ from backstabbr_api import backstabbr_api as bs_api
 import backstabbr_bot
 
 def main():
-    bsa = bs_api.BackstabbrAPI("[your session cookie, preferably as GM]", "base link to your game")
+    bsa = bs_api.BackstabbrAPI("[your session cookie, preferably as GM]", "[base link to your game]")
     submittedC = bsa.get_submitted_countries()
     supplyCC = bsa.get_supply_center_count()
 
