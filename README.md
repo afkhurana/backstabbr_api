@@ -47,3 +47,6 @@ if __name__ == '__main__':
 
 ## Contributors
 [J0hnny007](https://github.com/J0hnny007)
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
